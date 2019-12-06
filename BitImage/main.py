@@ -1,21 +1,11 @@
 import cv2
 import numpy as np 
-
+from CannyEdgeDetection import cannyEdge as cd
 # Reading an image in default mode 
-img = cv2.imread('GoJul.jpg',0)
+img = cv2.imread('Valve.png', 0)
 
 img_shape = img.shape
-h = img_shape[0]
-w = img_shape[1]
+res = cd.conv(img, 5)
 
-
-state = False
-for i in range(h):
-    for j in range(w):
-        if img[i,j]!=255 and not state:
-            state = True
-            px = i
-            py = j
-
-print(px,py, img[px,py] )
+cv2.imwrite('imageConv.jpg',res)
 
