@@ -64,8 +64,6 @@ class cannyEdge:
             plt.title("vertical Edge")
             plt.show()
 
-        #G_return =  np.sqrt(np.square(G_x) + np.square(G_y))
-        #G_return *= 255.0 / G_return.max()
         G_return = np.zeros(img.shape)
 
         for i in range(img.shape[0]):
@@ -84,7 +82,7 @@ class cannyEdge:
         if not all([isinstance(img, np.ndarray), 
                     isinstance(kernel, np.ndarray)]):
             return -1
-        #kernel = np.flipud(np.fliplr(kernel))
+        
         # Dimensions of the original image
         h_img = img.shape[0]
         w_img = img.shape[1]
@@ -113,6 +111,6 @@ class cannyEdge:
             for col in range(w_img):
                 for i in range(kernel_size):
                     for j in range(kernel_size):
-                        out_img[row,col]+=img_padded[row+i,col+j]*kernel[i,j]
+                        out_img[row, col]+=img_padded[row+i-k, col+j-k]*kernel[i,j] # TODO GO FIX!
 
         return out_img
