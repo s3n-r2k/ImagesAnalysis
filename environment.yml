@@ -1,0 +1,16 @@
+name: mrViz
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python
+  - jupyterlab
+  - flake8
+  - flake8-docstrings
+  - pytest
+  - pytest-cov
+  - mypy
+  - pre_commit
+  - pip
+  - pip:
+    - -e .
