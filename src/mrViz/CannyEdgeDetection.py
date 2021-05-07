@@ -1,6 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import math
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 class cannyEdge:
@@ -12,22 +13,45 @@ class cannyEdge:
     * Find the intensity gradients of the image
         * We use the Sobel operator
         * Source: https://en.wikipedia.org/wiki/Sobel_operator
-    * Apply non-maximum suppression to get rid of spurious response to edge detection
+    * Apply non-maximum suppression
+        We apply a non-maximum suppression to get rid of spurious
+        response to edge detection
     * Apply double threshold to determine potential edges
     * Track edge by hysteresis:
-       Finalize the detection of edges by suppressing all the other edges that are weak
-       and not connected to strong edges.
+        Finalize the detection of edges by suppressing all the other
+        edges that are weakand not connected to strong edges.
     """
 
     def __init__(self):
+        """
+        TODO: Consider if there are some stuff that are nice to initialize
+        """
         return
 
-    def GaussFilter(self, kernel_size=3, sigma=1.4):
+    def GaussFilter(
+        self, kernel_size: int = 3, sigma: float = 1.4
+    ) -> np.ndarray:
+        """Gaussian Filter
+
+        Method that creates Gaussian filter
+
+        Parameters
+        ----------
+        kernel_size : int, optional
+            The kernel size, must be odd, by default 3
+        sigma : float, optional
+            The sigma value, determines the blur, by default 1.4
+
+        Returns
+        -------
+        np.ndarray
+            The gaussian filter, a kernel_size x kernel_size matrix.
+        """
         # Error Checking - kernel dimensions must be odd
         if kernel_size % 2 == 0:
             return -2
 
-        # Generate kernel
+        # Initialize kernel
         kernel = np.zeros((kernel_size, kernel_size))
 
         k = (kernel_size - 1) // 2
@@ -40,7 +64,23 @@ class cannyEdge:
 
         return kernel
 
-    def Sobel_operator(self, img, show=True):
+    def Sobel_operator(
+        self, img: np.ndarray, show: bool = False
+    ) -> np.ndarray:
+        """[summary]
+
+        Parameters
+        ----------
+        img : np.ndarray
+            The image which to apply the Sobel operator
+        show : bool, optional
+            if True, the result of the operator is displayed, by default Fasle
+
+        Returns
+        -------
+        np.ndarray
+            The sobel operator applied to the image.
+        """
         kernel_x = np.array(
             [
                 [-1, 0, 1],
@@ -57,6 +97,7 @@ class cannyEdge:
             ]
         )
         G_x = self.conv(img, kernel_x)
+
         # If show is True then show the image
         if show:
             plt.imshow(G_x, cmap="gray")
@@ -121,6 +162,6 @@ class cannyEdge:
                     for j in range(kernel_size):
                         out_img[row, col] += (
                             img_padded[row + i - k, col + j - k] * kernel[i, j]
-                        )  # TODO GO FIX!
+                        )  # TODO: GO FIX!
 
         return out_img
